@@ -1,0 +1,34 @@
+{
+  "name": "crud_app",
+  "version": "1.0.0",
+  "description": "A data analysis Node application connected with MongoDB to perform the CRUD operations on the database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shubham39874/CRUD_APP.git"
+  },
+  "author": "Shubham Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shubham39874/CRUD_APP/issues"
+  },
+  "homepage": "https://github.com/Shubham39874/CRUD_APP#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "flash": "^1.1.0",
+    "mongodb": "^4.13.0",
+    "mongoose": "^5.11.8",
+    "nodemon": "^2.0.20",
+    "request": "^2.88.2"
+  }
+}
