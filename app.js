@@ -10,7 +10,8 @@ const router = express.Router();
 
 const app = express();
 
-const url = require('./url.js');
+const url = require('./secret.js');
+const port= process.env.port || 8080;
 
 app.use(bodyParser.json());
 
@@ -41,6 +42,8 @@ client.connect(err => {
        })
 
    })
+
+ 
 
  app.route('/users')
 
@@ -139,8 +142,11 @@ client.connect(err => {
 
        })
 
+ 
 
 })
+
+ 
 
 app.get('/', (req, res) => { 
 
@@ -148,8 +154,8 @@ app.get('/', (req, res) => {
 
 }) 
 
-app.listen(8080, () => { 
+app.listen(port, () => { 
 
-   console.log('server ready'); 
+   console.log(`server listening at ${port}`); 
 
 })
