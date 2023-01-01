@@ -10,139 +10,140 @@ const router = express.Router();
 
 const app = express();
 
-const url = require('./secret.js');
+const url = require('./url.js');
 const port= process.env.port || 8080;
 
 app.use(bodyParser.json());
 
-const client = new MongoClient(url, {
+const client = new MongoClient(url, { useNewUrlParser: true,
+     useUnifiedTopology: true});
 
-   useNewUrlParser: true,
+client.connect(async (err) => {
+    try{
 
-   useUnifiedTopology: true
-
-})
-
-client.connect(err => {
-
-   const myDB = client.db('people').collection('friends');
-
-   app.get('/user/:name', (req, res) => {
-
-       console.log(req.params);
-
-       myDB.find(req.params).toArray().then(results => {
-
-           console.log(results);
-
-           res.contentType('application/json');
-
-           res.send(JSON.stringify(results))
-
-       })
-
-   })
-
- 
-
- app.route('/users')
-
-       .get((req, res) => {
-
-           myDB.find().toArray().then(results => {
-
-               console.log(results);
-
-               res.contentType('application/json');
-
-               res.send(JSON.stringify(results))
-
-           })
-
-       })
-
-       .post((req, res) => {
-
-           console.log(req.body);
-
-           myDB.insertOne(req.body).then(results => {
- 
-
-               console.log(req.body);
-
-               res.contentType('application/json');
-
-               res.send(JSON.stringify(req.body))
-
+        const myDB = await client.db('people').collection('friends');
+     
+        app.get('/user/:name', async (req, res) => {
+     
+            console.log(req.params);
+     
+            await myDB.find(req.params).toArray().then(results => {
+     
+                console.log(results);
+     
+                res.contentType('application/json');
+     
+                res.send(JSON.stringify(results))
+     
+            })
+     
         })
-
-    })
-
-    .put((req, res) => {
-
-           console.log(req.body);
-
-           myDB.findOneAndUpdate({
-
-               _id: ObjectId(req.body._id)
-
-           }, {
-
-               $set: {
-
-                   name: req.body.name
-
-               }
-
-           }, {
-
-               upsert: false
-
-           }).then(result => {
-
-               res.contentType('application/json');
-
-               res.send({
-
-                   "status": true
-
-               })
-
-           })
-
-       }) 
-
-       .delete((req, res) => {
-
-           console.log(req.body);
-
-           myDB.deleteOne({
-
-                   _id: ObjectId(req.body._id)
-
-               }).then(result => {
-
-                   let boo = true; 
-
-                   if (result.deleteCount === 0) { 
-
-                       boo: false 
-
-                   } 
-
-                   res.send({ 
-
-                       "status": boo 
-
-                   }) 
-
-               }) 
-
-               .catch(error => console.log(error)) 
-
-       })
-
- 
+     
+      
+     
+      app.route('/users')
+     
+            .get(async (req, res) => {
+     
+                await myDB.find().toArray().then(async (results) => {
+     
+                    console.log(results);
+     
+                    res.contentType('application/json');
+     
+                    res.send(JSON.stringify(results))
+     
+                })
+     
+            })
+     
+            .post(async (req, res) => {
+     
+                console.log(req.body);
+     
+                await myDB.insertOne(req.body).then(results => {
+      
+     
+                    console.log(req.body);
+     
+                    res.contentType('application/json');
+     
+                    res.send(JSON.stringify(req.body))
+     
+             })
+     
+         })
+     
+         .put(async (req, res) => {
+     
+                console.log(req.body);
+     
+                await myDB.findOneAndUpdate({
+     
+                    _id: ObjectId(req.body._id)
+     
+                }, {
+     
+                    $set: {
+     
+                        name: req.body.name
+     
+                    }
+     
+                }, {
+     
+                    upsert: false
+     
+                }).then(result => {
+     
+                    res.contentType('application/json');
+     
+                    res.send({
+     
+                        "status": true
+     
+                    })
+     
+                })
+     
+            }) 
+     
+            .delete(async (req, res) => {
+     
+                console.log(req.body);
+     
+                await myDB.deleteOne({
+     
+                        _id: ObjectId(req.body._id)
+     
+                    }).then(result => {
+     
+                        let boo = true; 
+     
+                        if (result.deleteCount === 0) { 
+     
+                            boo: false 
+     
+                        } 
+     
+                        res.send({ 
+     
+                            "status": boo 
+     
+                        }) 
+     
+                    }) 
+     
+                    .catch(error => console.log(error)) 
+     
+            })
+     
+      
+        }
+        finally{
+            
+            //    await client.close();
+    }
 
 })
 
