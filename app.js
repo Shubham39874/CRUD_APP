@@ -7,11 +7,12 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 
 const router = express.Router();
+const PORT= process.env.PORT || 8080;
 
 const app = express();
 
 const url = require('./url.js');
-const port= process.env.port || 8080;
+
 
 app.use(bodyParser.json());
 
@@ -155,8 +156,6 @@ app.get('/', (req, res) => {
 
 }) 
 
-app.listen(port, () => { 
-
-   console.log(`server listening at ${port}`); 
-
-})
+app.listen(PORT, function(){
+    console.log(`Server has started at port ${PORT}`);
+});
